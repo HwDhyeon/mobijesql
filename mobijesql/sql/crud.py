@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
 from mobijesql.sql import models
+from mobijesql.sql.exceptions import DataNotFoundError
 from mobijesql.sql.schemas.error import ErrorCreate
-from mobijesql.sql.schemas.build import BuildCreate
+from mobijesql.sql.schemas.build import Build, BuildCreate
 from mobijesql.sql.schemas.e2etest import E2EtestCreate
 
 
@@ -37,13 +38,33 @@ def create_build(db: Session, build: BuildCreate):
     return db_build
 
 
+@commit
+def update_build(db: Session, build: Build):
+    db_build = db.query(models.Build).filter(
+        models.Build.id == build.id
+    ).one_or_none()
+    if db_build is None:
+        raise DataNotFoundError(f'Data not found.(id: {build.id})')
+
+    for var, value in vars(build).items():
+        if value:
+            setattr(db_build, var, value)
+
+    db.add(db_build)
+    return db_build
+
+
 # E2E
 def get_e2e_test(db: Session, test_id: int):
-    return db.query(models.E2Etest).filter(models.E2Etest.id == test_id).first()
+    return db.query(models.E2Etest).filter(
+        models.E2Etest.id == test_id
+    ).first()
 
 
 def get_e2e_test_by_build(db: Session, build_id: int):
-    return db.query(models.E2Etest).filter(models.E2Etest.build_id == build_id).first()
+    return db.query(models.E2Etest).filter(
+        models.E2Etest.build_id == build_id
+    ).first()
 
 
 def get_e2e_tests(db: Session, skip: int = 0, limit: int = 100):
@@ -56,6 +77,7 @@ def create_e2e_test(db: Session, e2etest: E2EtestCreate):
     db.add(db_e2etest)
     return db_e2etest
 
+
 # Errors
 def get_errors(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Error).offset(skip).limit(limit).all()
@@ -66,7 +88,9 @@ def get_error(db: Session, error_id: int):
 
 
 def get_errors_by_build(db: Session, build_id: int):
-    return db.query(models.Error).filter(models.Error.build_id == build_id).all()
+    return db.query(models.Error).filter(
+        models.Error.build_id == build_id
+    ).all()
 
 
 @commit

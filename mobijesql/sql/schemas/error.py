@@ -8,12 +8,12 @@ class ErrorBase(BaseModel):
     test_case: str
     error_type: str
     traceback: str
+    stage: str
+    occurred_at: datetime.datetime
 
 
 class ErrorCreate(ErrorBase):
     build_id: int
-    stage: str
-    occurred_at: datetime.datetime
 
 
 class Error(ErrorBase):

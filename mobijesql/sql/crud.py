@@ -3,7 +3,7 @@ from mobijesql.sql import models
 from mobijesql.sql.exceptions import DataNotFoundError
 from mobijesql.sql.schemas.error import ErrorCreate
 from mobijesql.sql.schemas.build import Build, BuildCreate
-from mobijesql.sql.schemas.e2etest import E2EtestCreate
+from mobijesql.sql.schemas.e2etest import E2Etest, E2EtestCreate
 
 
 def commit(func):
@@ -76,6 +76,21 @@ def create_e2e_test(db: Session, e2etest: E2EtestCreate):
     db_e2etest = models.E2Etest(**e2etest.dict())
     db.add(db_e2etest)
     return db_e2etest
+
+
+def update_e2e_test(db: Session, e2etest: E2Etest):
+    db_e2e = db.query(models.E2Etest).filter(
+        models.E2Etest.id == e2etest.id
+    ).one_or_none()
+    if db_e2e is None:
+        raise DataNotFoundError(f'Data not found.(id: {e2etest.id})')
+
+    for var, value in vars(e2etest).items():
+        if value:
+            setattr(db_e2e, var, value)
+
+    db.add(db_e2e)
+    return db_e2e
 
 
 # Errors

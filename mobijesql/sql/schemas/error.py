@@ -4,12 +4,12 @@ from pydantic import BaseModel
 
 
 class ErrorBase(BaseModel):
-    test_type: str
-    test_case: str
-    error_type: str
-    error_message: str
-    traceback: str
-    stage: str
+    test_type: str = None
+    test_case: str = None
+    error_type: str = None
+    error_message: str = None
+    traceback: str = None
+    stage: str = None
     occurred_at: datetime.datetime
 
 

@@ -91,6 +91,7 @@ class Error(Base):
     test_type = Column(String(20))
     test_case = Column(String(255))
     error_type = Column(String(255))
+    error_message = Column(Text)
     traceback = Column(Text)
     stage = Column(String(30))
     occurred_at = Column(DateTime, default=CURRENT_TIMESTAMP)

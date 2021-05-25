@@ -7,6 +7,7 @@ class ErrorBase(BaseModel):
     test_type: str
     test_case: str
     error_type: str
+    error_message: str
     traceback: str
     stage: str
     occurred_at: datetime.datetime

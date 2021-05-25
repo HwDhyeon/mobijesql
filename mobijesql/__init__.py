@@ -1,1 +1,3 @@
-__version__ = '0.0.3-alpha'
+"""Mobigen + Jenkins + SQL"""
+
+__version__ = '0.1.0-alpha'

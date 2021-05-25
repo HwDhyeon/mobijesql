@@ -164,4 +164,7 @@ Thumbs.db
 .history
 .ionide
 
+# SonarQube
+.scannerwork
+
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode

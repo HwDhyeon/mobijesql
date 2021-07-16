@@ -95,9 +95,9 @@ class JUnitXMLReportParser:
                 
 
     def result(self) -> TestResult:
-        failure = int(self.root.get('failures'))
-        errors = int(self.root.get('errors'))
-        skipped = 0
+        failure = int(self.root.get('failures') or 0)
+        errors = int(self.root.get('errors') or 0)
+        skipped = int(self.root.get('skipped') or 0)
         success = int(self.root.get('tests')) - failure - skipped
 
         return TestResult(
@@ -133,4 +133,5 @@ if __name__ == '__main__':
         print(file)
         print(f'= = = Errors {len(errors)} = = =')
         print(f'= = = Failures {len(failures)} = = =')
+        print(parser.result())
         print()

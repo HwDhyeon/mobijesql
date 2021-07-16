@@ -4,7 +4,7 @@ from setuptools import find_packages
 
 setup_options = {
     'name': 'mobijeSQL',
-    'version': '0.1.1-alpha',
+    'version': '0.1.2-alpha',
     'description': '',
     'author': 'HwDhyeon',
     'author_email': 'youfsk@mobigen.com',

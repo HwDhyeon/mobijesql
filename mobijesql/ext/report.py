@@ -41,9 +41,10 @@ class JUnitXMLReportParser:
         r = []
 
         for suite in self.suites:
-            start_time = dt.datetime.fromisoformat(
-                suite.get('timestamp')
-            )
+            if (start_time := suite.get('timestamp')) is None:
+                start_time = dt.datetime.now()
+            else:
+                start_time = dt.datetime.fromisoformat(start_time)
 
             for case in suite.iter('testcase'):
                 if (error := case.find('error')) is None:
@@ -69,9 +70,10 @@ class JUnitXMLReportParser:
         r = []
 
         for suite in self.suites:
-            start_time = dt.datetime.fromisoformat(
-                suite.get('timestamp')
-            )
+            if (start_time := suite.get('timestamp')) is None:
+                start_time = dt.datetime.now()
+            else:
+                start_time = dt.datetime.fromisoformat(start_time)
 
             for case in suite.iter('testcase'):
                 if (failure := case.find('failure')) is None:
@@ -124,7 +126,7 @@ if __name__ == '__main__':
     import datetime as dt
     import glob
 
-    files = glob.glob('test-report/*.xml')
+    files = glob.glob('./*.xml')
     for file in files:
         parser = JUnitXMLReportParser(file)
         errors = parser.errors()
